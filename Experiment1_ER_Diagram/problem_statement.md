@@ -22,32 +22,52 @@ FlexiFit Gym wants a database to manage its members, trainers, and fitness progr
 - Payments tracked for memberships and sessions.
 
 ### ER Diagram:
-*Paste or attach your diagram here*  
-![ER Diagram](er_diagram_fitness.png)
+<img width="1536" height="1024" alt="er1" src="https://github.com/user-attachments/assets/2e27a507-50e3-4e01-9cc5-93769e6d1d36" />
 
-### Entities and Attributes
+
+# City Fitness Club Management – ER Model Documentation
+
+## Entities and Attributes
 
 | Entity | Attributes (PK, FK) | Notes |
-|--------|--------------------|-------|
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
+|--------|----------------------|-------|
+| **Member** | **MemberID (PK)**, Name, MembershipType, StartDate | Stores registered gym members. |
+| **Program** | **ProgramID (PK)**, ProgramName, Description, Duration | Fitness programs such as Yoga, Zumba, Weight Training. |
+| **Trainer** | **TrainerID (PK)**, Name, Specialization, Phone | Trainers assigned to one or more programs. |
+| **Member_Program** | **MemberID (PK, FK)**, **ProgramID (PK, FK)**, JoinDate | Associative entity for Member–Program relationship. |
+| **Session_Booking** | **BookingID (PK)**, MemberID (FK), TrainerID (FK), SessionDate, SessionTime | Records personal training bookings. |
+| **Attendance** | **AttendanceID (PK)**, BookingID (FK), AttendanceStatus | Stores attendance for each booked session. |
+| **Payment** | **PaymentID (PK)**, MemberID (FK), BookingID (FK), Amount, PaymentDate, PaymentType | Records membership and session payments. |
 
-### Relationships and Constraints
+---
+
+## Relationships and Constraints
 
 | Relationship | Cardinality | Participation | Notes |
-|--------------|------------|---------------|-------|
-|              |            |               |       |
-|              |            |               |       |
-|              |            |               |       |
+|-------------|-------------|---------------|-------|
+| Member **enrolls in** Program | M : N | Total (Member), Partial (Program) | A member can enroll in multiple programs; each program has many members. |
+| Program **assigned to** Trainer | M : N | Total (Program), Partial (Trainer) | A program may have multiple trainers; a trainer can teach multiple programs. |
+| Member **books** Session_Booking | 1 : N | Total (Session), Partial (Member) | One member can book many personal training sessions. |
+| Trainer **conducts** Session_Booking | 1 : N | Total (Session), Partial (Trainer) | One trainer can conduct many personal training sessions. |
+| Session_Booking **has** Attendance | 1 : 1 | Total (Both) | Every booked session has one attendance record. |
+| Member **makes** Payment | 1 : N | Total (Payment), Partial (Member) | A member can make multiple payments. |
+| Session_Booking **may generate** Payment | 1 : 1 | Partial | Session payment is linked to a booking when applicable. |
 
-### Assumptions
-- 
-- 
-- 
+---
 
+## Assumptions
+
+- Every member has a unique **MemberID**.
+- Every trainer has a unique **TrainerID**.
+- Every fitness program has a unique **ProgramID**.
+- Members can enroll in multiple fitness programs.
+- A fitness program may have one or more trainers.
+- Personal training sessions are booked by exactly one member with one trainer.
+- Attendance is recorded for every booked session.
+- Payments can be for either **Membership** or **Personal Training Session**.
+- Membership types (Basic, Premium, Elite, etc.) are predefined.
+- A booking cannot exist without both a valid member and a valid trainer.
+- Only active members can enroll in programs and book training sessions.
 ---
 
 # Scenario B: City Library Event & Book Lending System
