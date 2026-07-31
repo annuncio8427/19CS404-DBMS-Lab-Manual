@@ -131,7 +131,7 @@ The Central Library wants to manage book lending and cultural events.
 - Rooms can be booked for either library events or study purposes.
 - Room bookings cannot overlap for the same room and time slot.
 - All dates and times are stored using the system date and time format.
-```
+
 ---
 
 # Scenario C: Restaurant Table Reservation & Ordering
@@ -148,33 +148,52 @@ A popular restaurant wants to manage reservations, orders, and billing.
 - Waiters assigned to serve reservations.
 
 ### ER Diagram:
-*Paste or attach your diagram here*  
-![ER Diagram](er_diagram_restaurant.png)
+<img width="1672" height="941" alt="er3" src="https://github.com/user-attachments/assets/35ab7b38-ea17-4e8d-b87a-4727abc99ed5" />
 
-### Entities and Attributes
+## Entities and Attributes
 
 | Entity | Attributes (PK, FK) | Notes |
-|--------|--------------------|-------|
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
+|--------|----------------------|-------|
+| **Customer** | **CustomerID (PK)**, Name, Phone, Email | Stores customer details. |
+| **Reservation** | **ReservationID (PK)**, CustomerID (FK), TableID (FK), WaiterID (FK), ReservationDate, ReservationTime, NoOfGuests, ReservationType (Reserved/Walk-in), Status | Stores reservation and walk-in details. |
+| **Table** | **TableID (PK)**, TableNumber, Capacity, Status | Stores restaurant table information. |
+| **Waiter** | **WaiterID (PK)**, Name, Phone, Shift | Stores waiter details. |
+| **Order** | **OrderID (PK)**, ReservationID (FK), OrderDateTime, OrderStatus | Stores food orders placed for a reservation. |
+| **Dish** | **DishID (PK)**, DishName, CategoryID (FK), Price | Stores menu items. |
+| **Category** | **CategoryID (PK)**, CategoryName | Categories such as Starter, Main Course, Dessert, Beverage. |
+| **Order_Item** | **OrderID (PK, FK)**, **DishID (PK, FK)**, Quantity, UnitPrice | Associative entity between Order and Dish. |
+| **Bill** | **BillID (PK)**, ReservationID (FK), FoodCharge, ServiceCharge, Tax, TotalAmount, PaymentStatus | Stores billing information for each reservation. |
 
-### Relationships and Constraints
+---
+
+## Relationships and Constraints
 
 | Relationship | Cardinality | Participation | Notes |
 |--------------|------------|---------------|-------|
-|              |            |               |       |
-|              |            |               |       |
-|              |            |               |       |
-
-### Assumptions
-- 
-- 
-- 
+| Customer **makes** Reservation | 1 : N | Total (Reservation), Partial (Customer) | A customer can make multiple reservations. |
+| Reservation **allocates** Table | N : 1 | Total (Reservation), Partial (Table) | Each reservation is assigned one table. |
+| Waiter **serves** Reservation | 1 : N | Total (Reservation), Partial (Waiter) | One waiter can serve multiple reservations. |
+| Reservation **places** Order | 1 : N | Total (Order), Partial (Reservation) | A reservation can have multiple food orders. |
+| Order **contains** Dish | M : N | Total (Order), Total (Dish) | Implemented using **Order_Item**. |
+| Dish **belongs to** Category | N : 1 | Total (Dish), Partial (Category) | Every dish belongs to one category. |
+| Reservation **generates** Bill | 1 : 1 | Total (Both) | One reservation generates one bill. |
 
 ---
+
+## Assumptions
+
+- Every customer has a unique **CustomerID**.
+- Walk-in customers are also stored as customer records.
+- Each reservation is assigned exactly one table.
+- A table can have multiple reservations on different dates and times but only one active reservation at a specific time.
+- Each reservation is served by one waiter.
+- A reservation can have multiple food orders.
+- An order contains one or more dishes.
+- A dish belongs to exactly one category.
+- Bills include food charges, service charges, taxes, and the total amount.
+- One bill is generated for each reservation.
+- Payment status can be **Pending**, **Paid**, or **Cancelled**.
+
 
 ## Instructions for Students
 
