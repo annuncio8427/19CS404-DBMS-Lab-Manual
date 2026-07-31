@@ -84,32 +84,58 @@ The Central Library wants to manage book lending and cultural events.
 - Overdue fines apply for late returns.
 
 ### ER Diagram:
-*Paste or attach your diagram here*  
-![ER Diagram](er_diagram_library.png)
+<img width="1536" height="1024" alt="er2" src="https://github.com/user-attachments/assets/3d584b06-41ff-46d7-97c6-a4e5f834c2ad" />
 
-### Entities and Attributes
+# City Library Event & Book Lending System – ER Model Documentation
+
+## Entities and Attributes
 
 | Entity | Attributes (PK, FK) | Notes |
-|--------|--------------------|-------|
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
+|--------|----------------------|-------|
+| **Member** | **MemberID (PK)**, Name, Email, Phone, Address, JoinDate | Stores library member information. |
+| **Book** | **BookID (PK)**, Title, Author, CategoryID (FK), ISBN, Publisher, Year | Stores details of library books. |
+| **Category** | **CategoryID (PK)**, CategoryName, Description | Classifies books into categories. |
+| **Book_Loan** | **LoanID (PK)**, MemberID (FK), BookID (FK), LoanDate, DueDate, ReturnDate, Status | Tracks book borrowing and returns. |
+| **Fine** | **FineID (PK)**, LoanID (FK), FineAmount, FineDate, PaymentStatus | Stores overdue fines for late returns. |
+| **Event** | **EventID (PK)**, EventName, EventDate, EventType, Description | Stores cultural and educational events. |
+| **Speaker** | **SpeakerID (PK)**, Name, Profession, ContactNo | Stores speaker/author details. |
+| **Event_Speaker** | **EventID (PK, FK)**, **SpeakerID (PK, FK)** | Associative entity connecting events and speakers. |
+| **Event_Registration** | **RegistrationID (PK)**, MemberID (FK), EventID (FK), RegistrationDate | Tracks member registrations for events. |
+| **Room** | **RoomID (PK)**, RoomName, Capacity, RoomType | Stores library room details. |
+| **Room_Booking** | **BookingID (PK)**, RoomID (FK), MemberID (FK), BookingDate, StartTime, EndTime, Purpose | Records room bookings for study or events. |
 
-### Relationships and Constraints
+---
+
+## Relationships and Constraints
 
 | Relationship | Cardinality | Participation | Notes |
-|--------------|------------|---------------|-------|
-|              |            |               |       |
-|              |            |               |       |
-|              |            |               |       |
+|-------------|-------------|---------------|-------|
+| Member **borrows** Book | 1 : N | Total (Book_Loan), Partial (Member) | A member can borrow multiple books. |
+| Book **has** Book_Loan | 1 : N | Total (Book_Loan), Partial (Book) | A book can be borrowed multiple times over time. |
+| Book **belongs to** Category | N : 1 | Total (Book), Partial (Category) | Every book belongs to one category. |
+| Book_Loan **generates** Fine | 1 : 0..1 | Partial (Fine) | A fine is generated only for overdue returns. |
+| Member **registers for** Event | M : N | Total (Registration), Partial (Member & Event) | Members can register for multiple events. |
+| Event **has** Speaker | M : N | Total (Event), Partial (Speaker) | An event may have multiple speakers/authors. |
+| Room **is booked for** Event/Study | 1 : N | Total (Room_Booking), Partial (Room) | Rooms can be booked multiple times. |
+| Member **books** Room | 1 : N | Partial (Member) | Members can reserve rooms for study or events. |
 
-### Assumptions
-- 
-- 
-- 
+---
 
+## Assumptions
+
+- Every member has a unique **MemberID**.
+- Every book has a unique **BookID**.
+- Every category has a unique **CategoryID**.
+- Every event has a unique **EventID**.
+- Every speaker has a unique **SpeakerID**.
+- A member can borrow multiple books, but a book can be loaned to only one member at a time.
+- Overdue fines are generated only when the return date exceeds the due date.
+- Members can register for multiple events.
+- Each event must have at least one speaker/author.
+- Rooms can be booked for either library events or study purposes.
+- Room bookings cannot overlap for the same room and time slot.
+- All dates and times are stored using the system date and time format.
+```
 ---
 
 # Scenario C: Restaurant Table Reservation & Ordering
