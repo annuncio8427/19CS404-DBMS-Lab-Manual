@@ -25,8 +25,6 @@ FlexiFit Gym wants a database to manage its members, trainers, and fitness progr
 <img width="1536" height="1024" alt="er1" src="https://github.com/user-attachments/assets/2e27a507-50e3-4e01-9cc5-93769e6d1d36" />
 
 
-# City Fitness Club Management – ER Model Documentation
-
 ## Entities and Attributes
 
 | Entity | Attributes (PK, FK) | Notes |
@@ -85,8 +83,6 @@ The Central Library wants to manage book lending and cultural events.
 
 ### ER Diagram:
 <img width="1536" height="1024" alt="er2" src="https://github.com/user-attachments/assets/3d584b06-41ff-46d7-97c6-a4e5f834c2ad" />
-
-# City Library Event & Book Lending System – ER Model Documentation
 
 ## Entities and Attributes
 
